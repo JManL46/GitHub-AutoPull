@@ -8,21 +8,21 @@ const handler = createHandler({ path: '/github', secret: config.github.secret })
 const { exec } = require('child_process');
 
 process.on('exit', (code) => {
-    if (config.debug) {console.log(`forced exit of code: ${code}`);} else {return;}
+    if (config.debug) {console.log(`forced exit of code: ${code}`);} else {return false;}
 });
 process.on('unhandledRejection', (reason, p) => {
     unhandledRejections.set(p, reason);
-    if (config.debug) {console.log(`Unhandled rejection: ${p} : ${reason}`);} else {return;}
+    if (config.debug) {console.log(`Unhandled rejection: ${p} : ${reason}`);} else {return false;}
 });
 process.on('rejectionHandled', (p) => {
     unhandledRejections.delete(p);
-    if (config.debug) {console.log(`Rejection handled: ${p}`);} else {return;}
+    if (config.debug) {console.log(`Rejection handled: ${p}`);} else {return false;}
 });
 process.on('uncaughtException', (err) => {
-    if (config.debug) {console.log(`Caught exception: ${err.stack}`);} else {return;}
+    if (config.debug) {console.log(`Caught exception: ${err.stack}`);} else {return false;}
 });
 process.on('warning', (warning) => {
-    if (config.debug) {console.log(`Process warning: ${warning.name}\nMessage: ${warning.message}\nStack trace:\n${warning.trace}`);} else {return;}
+    if (config.debug) {console.log(`Process warning: ${warning.name}\nMessage: ${warning.message}\nStack trace:\n${warning.trace}`);} else {return false;}
 });
 
 http.createServer((req, res) => {
@@ -34,7 +34,7 @@ http.createServer((req, res) => {
 }).listen(config.http.port);
 
 handler.on('error', (err) => {
-    if (config.debug) {console.error('Error:', err.message);} else {return;}
+    if (config.debug) {console.error('Error:', err.message);} else {return false;}
 });
 
 handler.on('push', (event) => {
@@ -58,7 +58,7 @@ handler.on('push', (event) => {
                 */
 
                 default:
-                    return;
+                    return false;
             };
             break;
 
@@ -70,23 +70,23 @@ handler.on('push', (event) => {
                     break;
 
                 default:
-                    return;
+                    return false;
             };
             break;
 
         default:
-            return;
+            return false;
     };
 
     exec('cd '+Dir+' && git add -A . && git stash && git pull && npm install && '+End, (error, stdout, stderr) => {
         if (error) {
-            if (config.debug) {return console.error(`exec error: ${error}`);} else {return;}
+            if (config.debug) {return console.error(`exec error: ${error}`);} else {return false;}
         } else {
-            if (config.debug) {console.log(`${Name}/${Branch} Pull & Restart Success`);} else {return;}
+            if (config.debug) {console.log(`${Name}/${Branch} Pull & Restart Success`);} else {return false;}
         }
     });
 });
 
 handler.on('issues', (event) => {
-    if (config.debug) {console.log('Received an issue event for %s action=%s: #%d %s', event.payload.repository.name, event.payload.action, event.payload.issue.number, event.payload.issue.title);} else {return;}
+    if (config.debug) {console.log('Received an issue event for %s action=%s: #%d %s', event.payload.repository.name, event.payload.action, event.payload.issue.number, event.payload.issue.title);} else {return false;}
 });
