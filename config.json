@@ -1,0 +1,9 @@
+{
+    "github": {
+        "secret": "1ceAd82b0dGdb199K4233408c1b5ea3fB066"
+    },
+    "http": {
+        "port": 1338
+    },
+    "debug": true
+}

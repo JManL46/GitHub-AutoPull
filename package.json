@@ -1,0 +1,14 @@
+{
+  "name": "githubautopull",
+  "version": "1.0.0",
+  "author": "+Flabby",
+  "description": "Pulls from GitHub and Restarts PM2 Proccesses",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Orion-Entertainment/GitHub-AutoPull.git"
+  },
+  "dependencies": {
+    "node-github-webhook": "^1.0.7"
+  }
+}
