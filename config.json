@@ -5,5 +5,5 @@
     "http": {
         "port": 1338
     },
-    "debug": true
+    "debug": false
 }
