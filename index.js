@@ -8,21 +8,21 @@ const handler = createHandler({ path: '/github', secret: config.github.secret })
 const { exec } = require('child_process');
 
 process.on('exit', (code) => {
-    if (config.debug) {console.log(`forced exit of code: ${code}`);} else {return false;}
+    if (config.debug) {console.log(`forced exit of code: ${code}`);}
 });
 process.on('unhandledRejection', (reason, p) => {
     unhandledRejections.set(p, reason);
-    if (config.debug) {console.log(`Unhandled rejection: ${p} : ${reason}`);} else {return false;}
+    if (config.debug) {console.log(`Unhandled rejection: ${p} : ${reason}`);}
 });
 process.on('rejectionHandled', (p) => {
     unhandledRejections.delete(p);
-    if (config.debug) {console.log(`Rejection handled: ${p}`);} else {return false;}
+    if (config.debug) {console.log(`Rejection handled: ${p}`);}
 });
 process.on('uncaughtException', (err) => {
-    if (config.debug) {console.log(`Caught exception: ${err.stack}`);} else {return false;}
+    if (config.debug) {console.log(`Caught exception: ${err.stack}`);}
 });
 process.on('warning', (warning) => {
-    if (config.debug) {console.log(`Process warning: ${warning.name}\nMessage: ${warning.message}\nStack trace:\n${warning.trace}`);} else {return false;}
+    if (config.debug) {console.log(`Process warning: ${warning.name}\nMessage: ${warning.message}\nStack trace:\n${warning.trace}`);}
 });
 
 http.createServer((req, res) => {
@@ -34,7 +34,7 @@ http.createServer((req, res) => {
 }).listen(config.http.port);
 
 handler.on('error', (err) => {
-    if (config.debug) {console.error('Error:', err.message);} else {return false;}
+    if (config.debug) {console.error('Error:', err.message);}
 });
 
 handler.on('push', (event) => {
@@ -56,9 +56,6 @@ handler.on('push', (event) => {
                     End = 'pm2 restart Panel-WebsiteDEV';
                     break;
                 */
-
-                default:
-                    return false;
             };
             break;
 
@@ -68,25 +65,19 @@ handler.on('push', (event) => {
                     Dir = '/var/www/Panel-API';
                     End = 'pm2 restart Panel-API';
                     break;
-
-                default:
-                    return false;
             };
             break;
-
-        default:
-            return false;
     };
 
     exec('cd '+Dir+' && git add -A . && git stash && git pull && npm install && '+End, (error, stdout, stderr) => {
         if (error) {
-            if (config.debug) {return console.error(`exec error: ${error}`);} else {return false;}
+            if (config.debug) {return console.error(`exec error: ${error}`);}
         } else {
-            if (config.debug) {console.log(`${Name}/${Branch} Pull & Restart Success`);} else {return false;}
+            if (config.debug) {console.log(`${Name}/${Branch} Pull & Restart Success`);}
         }
     });
 });
 
 handler.on('issues', (event) => {
-    if (config.debug) {console.log('Received an issue event for %s action=%s: #%d %s', event.payload.repository.name, event.payload.action, event.payload.issue.number, event.payload.issue.title);} else {return false;}
+    if (config.debug) {console.log('Received an issue event for %s action=%s: #%d %s', event.payload.repository.name, event.payload.action, event.payload.issue.number, event.payload.issue.title);}
 });
