@@ -44,30 +44,40 @@ handler.on('push', (event) => {
     if (config.debug) {console.log(`Pull Request From ${Name}/${Branch}`);}
 
     switch (Name) {
-        case "Panel-Website": 
+        case "Panel-Website":
             switch (Branch) {
                 case "master":
                     Dir = '/var/www/Panel-Website';
                     End = 'pm2 restart Panel-Website';
                     break;
-                /*    
+                /*
                 case "development":
                     Dir = '/var/www/ALPanelDEV';
                     End = 'pm2 restart Panel-WebsiteDEV';
                     break;
                 */
+
+                default:
+                    return;
             };
             break;
 
-        case "Panel-API": 
+        case "Panel-API":
             switch (Branch) {
                 case "master":
                     Dir = '/var/www/Panel-API';
                     End = 'pm2 restart Panel-API';
                     break;
+
+                default:
+                    return;
             };
             break;
+
+        default:
+            return;
     };
+
     exec('cd '+Dir+' && git add -A . && git stash && git pull && npm install && '+End, (error, stdout, stderr) => {
         if (error) {
             if (config.debug) {return console.error(`exec error: ${error}`);} else {return;}
