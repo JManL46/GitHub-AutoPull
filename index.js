@@ -44,6 +44,18 @@ handler.on('push', (event) => {
     if (config.debug) {console.log(`Pull Request From ${Name}/${Branch}`);}
 
     switch (Name) {
+        case "Website":
+            switch (Branch) {
+                case "master":
+                    Dir = '/var/www/Website';
+                    End = 'pm2 restart Website';
+                    break;
+
+                default:
+                    return false;
+            };
+            break;
+
         case "Panel-Website":
             switch (Branch) {
                 case "master":
